@@ -118,25 +118,23 @@ export default function ManageSocialsPage() {
     };
 
     const columns = [
-        { header: "Platform", accessor: "platform" },
-        { header: "URL", accessor: "url" },
+        { header: "Platform", accessor: (row: any) => row.platform },
+        { header: "URL", accessor: (row: any) => row.url },
         {
             header: "Status",
-            accessor: "active",
-            render: (value: boolean) => (
+            accessor: (row: any) => (
                 <span
-                    className={`px-2 py-1 rounded-full text-xs ${value ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                    className={`px-2 py-1 rounded-full text-xs ${row.active ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                         }`}
                 >
-                    {value ? "Active" : "Inactive"}
+                    {row.active ? "Active" : "Inactive"}
                 </span>
             ),
         },
         {
             header: "Actions",
-            accessor: "_id",
-            render: (id: string, row: any) => (
-                <div className="flex gap-2">
+            accessor: (row: any) => (
+                <div className="flex gap-2 justify-end">
                     <button
                         onClick={() => handleEdit(row)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
@@ -144,7 +142,7 @@ export default function ManageSocialsPage() {
                         <FaEdit />
                     </button>
                     <button
-                        onClick={() => handleDelete(id)}
+                        onClick={() => handleDelete(row._id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
                     >
                         <FaTrash />
@@ -172,7 +170,7 @@ export default function ManageSocialsPage() {
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-                <DataTable columns={columns} data={socials} isLoading={isLoading} />
+                <DataTable columns={columns} data={socials} isLoading={isLoading} keyField="_id" />
             </div>
 
             <Modal

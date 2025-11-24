@@ -75,9 +75,6 @@ export default function ManagePaymentMethodsPage() {
 
         const payload = {
             name,
-            name,
-            // details, // Removed
-            logoUrl,
             logoUrl,
             isActive,
         };
@@ -121,11 +118,10 @@ export default function ManagePaymentMethodsPage() {
     const columns = [
         {
             header: "Logo",
-            accessor: "logoUrl",
-            render: (value: string) => (
-                value ? (
+            accessor: (row: any) => (
+                row.logoUrl ? (
                     <div className="w-12 h-12 relative rounded-md overflow-hidden border border-gray-200">
-                        <Image src={value} alt="Logo" fill className="object-cover" />
+                        <Image src={row.logoUrl} alt="Logo" fill className="object-cover" />
                     </div>
                 ) : (
                     <div className="w-12 h-12 bg-gray-100 rounded-md flex items-center justify-center text-xs text-gray-400">
@@ -134,21 +130,19 @@ export default function ManagePaymentMethodsPage() {
                 )
             ),
         },
-        { header: "Name", accessor: "name" },
+        { header: "Name", accessor: (row: any) => row.name },
         {
             header: "Status",
-            accessor: "isActive",
-            render: (value: boolean) => (
-                <span className={`px-2 py-1 rounded-full text-xs ${value ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                    {value ? 'Active' : 'Inactive'}
+            accessor: (row: any) => (
+                <span className={`px-2 py-1 rounded-full text-xs ${row.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {row.isActive ? 'Active' : 'Inactive'}
                 </span>
             )
         },
         {
             header: "Actions",
-            accessor: "_id",
-            render: (id: string, row: any) => (
-                <div className="flex gap-2">
+            accessor: (row: any) => (
+                <div className="flex gap-2 justify-end">
                     <button
                         onClick={() => handleEdit(row)}
                         className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
@@ -156,7 +150,7 @@ export default function ManagePaymentMethodsPage() {
                         <FaEdit />
                     </button>
                     <button
-                        onClick={() => handleDelete(id)}
+                        onClick={() => handleDelete(row._id)}
                         className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
                     >
                         <FaTrash />
@@ -183,6 +177,7 @@ export default function ManagePaymentMethodsPage() {
                     columns={columns}
                     data={methods}
                     isLoading={isLoading}
+                    keyField="_id"
                 />
             </div>
 

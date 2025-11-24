@@ -123,6 +123,7 @@ export default function ManageProductsPage() {
                         keyField="_id"
                         onDelete={handleDelete}
                         onEdit={(product) => router.push(`/admin/products/edit/${product._id}`)}
+                        isLoading={isLoading}
                     />
                 ) : (
                     <div className="p-12 text-center">
