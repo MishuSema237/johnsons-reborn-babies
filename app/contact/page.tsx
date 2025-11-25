@@ -121,7 +121,7 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="w-full max-w-viewport mx-auto py-4">
+    <div className="w-full max-w-viewport mx-auto">
       {/* ... (Header and Form code remains same) ... */}
       <div className="text-center mb-16">
         <h1 className="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Get In Touch</h1>

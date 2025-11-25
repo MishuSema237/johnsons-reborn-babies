@@ -17,7 +17,7 @@ export function MainContent({ children }: { children: React.ReactNode }) {
 
     return (
         <main
-            className={`flex-1 w-full ${isHome ? "p-0" : "max-w-viewport mx-auto px-4 pt-[40px]"
+            className={`flex-1 w-full ${isHome ? "p-0" : "max-w-viewport mx-auto px-4 pt-[35px]"
                 }`}
         >
             {children}
