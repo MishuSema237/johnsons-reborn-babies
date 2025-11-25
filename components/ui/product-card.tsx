@@ -62,7 +62,7 @@ export function ProductCard({
       </div>
 
       {/* Content Overlay - Dark Gradient */}
-      <div className="absolute bottom-0 left-0 right-0 h-3/4 bg-gradient-to-t from-black/90 via-black/50 to-transparent backdrop-blur-[2px] z-20 p-6 flex flex-col justify-end">
+      <div className="absolute bottom-0 left-0 right-0 h-[35%] bg-gradient-to-t from-black/90 via-black/50 to-transparent backdrop-blur-[2px] z-20 p-6 flex flex-col justify-end">
         <Link href={`/product/${slug}`} className="block">
           <h3 style={{ color: "white" }} className="text-2xl font-black capitalize drop-shadow-md mb-1 truncate tracking-wide !text-white">{name}</h3>
           <p className="text-white/90 text-sm mb-4 line-clamp-2 drop-shadow-sm font-medium">
