@@ -48,7 +48,7 @@ export function ProductCard({
       </div>
 
       {/* Content Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-white/40 to-transparent backdrop-blur-[2px] z-20 p-6 flex flex-col justify-end">
+      <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/70 via-black/40 to-transparent backdrop-blur-md z-20 p-6 flex flex-col justify-end">
         <Link href={`/product/${slug}`} className="block">
           <h3 className="text-xl font-bold text-white drop-shadow-md mb-1 truncate">{name}</h3>
           <p className="text-white/90 text-sm mb-4 line-clamp-2 drop-shadow-sm">
