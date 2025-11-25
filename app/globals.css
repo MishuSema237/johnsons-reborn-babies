@@ -89,7 +89,7 @@ svg {
 }
 
 /* Focus states for accessibility */
-button:focus,
+
 input:focus,
 select:focus,
 textarea:focus {
