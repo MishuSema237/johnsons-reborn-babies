@@ -91,6 +91,12 @@ export default function CartPage() {
                 Trusted
               </div>
             </div>
+
+            <div className="mt-6 text-center">
+              <Link href="/track-order" className="text-sm text-pink-600 hover:text-pink-700 underline">
+                Track an existing order
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -8,16 +8,13 @@ import { ProductGrid } from "@/components/sections/product-grid";
 import { TestimonialsSection } from "@/components/sections/testimonials";
 import { FeaturesSection } from "@/components/sections/features";
 import { ProcessModalContent } from "@/components/sections/modals/process-modal";
-import { StoryModalContent } from "@/components/sections/modals/story-modal";
 import Image from "next/image";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function Home() {
   const [processModalOpen, setProcessModalOpen] = useState(false);
   const [storyModalOpen, setStoryModalOpen] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [heroImages, setHeroImages] = useState<any[]>([]);
-  const [currentHeroIndex, setCurrentHeroIndex] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,23 +39,6 @@ export default function Home() {
 
     fetchData();
   }, []);
-
-  // Hero Slider Timer
-  useEffect(() => {
-    if (heroImages.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [heroImages.length]);
-
-  const nextSlide = () => {
-    setCurrentHeroIndex((prev) => (prev + 1) % heroImages.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentHeroIndex((prev) => (prev - 1 + heroImages.length) % heroImages.length);
-  };
 
   return (
     <div className="w-full">
@@ -116,21 +96,15 @@ export default function Home() {
             <div className="relative w-full h-full max-w-lg mx-auto">
               {/* Main abstract shape/image placeholder */}
               <div className="absolute inset-0 bg-gradient-to-tr from-pink-500/20 to-purple-500/20 rounded-full blur-3xl animate-pulse" />
-              <div className="relative w-full h-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl bg-white/5 backdrop-blur-sm p-2 rotate-3 hover:rotate-0 transition-transform duration-700">
-                {heroImages.length > 0 ? (
-                  <Image
-                    src={heroImages[currentHeroIndex]?.imageUrl || heroImages[0]?.imageUrl}
-                    alt="Featured Baby"
-                    fill
-                    className="object-cover rounded-2xl transition-opacity duration-1000"
-                    priority
-                    unoptimized
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-800 rounded-2xl flex items-center justify-center">
-                    <span className="text-gray-500">Featured Image</span>
-                  </div>
-                )}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <Image
+                  src="/assets/baby1.png"
+                  alt="Reborn Baby"
+                  width={600}
+                  height={800}
+                  className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-700"
+                  priority
+                />
               </div>
             </div>
           </div>

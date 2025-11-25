@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import { SiteFooter } from "@/components/layout/site-footer";
 import SiteHeader from "@/components/layout/site-header";
-import { AdminLink } from "@/components/layout/admin-link";
+import { BackToTop } from "@/components/layout/back-to-top";
 import { CartProvider } from "@/lib/context/cart-context";
+import { MainContent } from "@/components/layout/main-content";
 import "./globals.css";
 
 const bodyFont = Inter({
@@ -24,10 +25,6 @@ export const metadata: Metadata = {
     "Handcrafted silicone reborn babies offering comfort, healing, and collection-worthy artistry.",
 };
 
-import { MainContent } from "@/components/layout/main-content";
-
-// ... imports remain same
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,7 +43,7 @@ export default function RootLayout({
             </MainContent>
             <SiteFooter />
           </div>
-          <AdminLink />
+          <BackToTop />
         </CartProvider>
       </body>
     </html>

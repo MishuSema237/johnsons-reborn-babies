@@ -20,6 +20,7 @@ interface ProductGridProps {
   showViewAll?: boolean;
   itemsPerPage?: number;
   enablePagination?: boolean;
+  mobileLayout?: "carousel" | "grid";
 }
 
 export function ProductGrid({
@@ -28,6 +29,7 @@ export function ProductGrid({
   showViewAll = true,
   itemsPerPage = 8,
   enablePagination = false,
+  mobileLayout = "carousel",
 }: ProductGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -48,20 +50,40 @@ export function ProductGrid({
       <div className="container mx-auto px-6">
         <h2 className="text-center mb-12 text-4xl font-bold">{title}</h2>
 
-        {/* Mobile Slideshow (Horizontal Scroll) */}
-        <div className="md:hidden flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 -mx-6 px-6 scrollbar-hide">
-          {products.slice(0, enablePagination ? itemsPerPage * totalPages : undefined).map((product) => (
-            <div key={product._id || product.id} className="snap-center shrink-0 w-[85vw] sm:w-[300px]">
-              <ProductCard
-                id={product._id || product.id || ""}
-                name={product.name}
-                price={product.price}
-                slug={product.slug}
-                imageUrl={product.imageUrl || (product.images && product.images[0])}
-                description={product.description}
-              />
+        {/* Mobile View */}
+        <div className="md:hidden">
+          {mobileLayout === "carousel" ? (
+            /* Horizontal Scroll (Carousel) */
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 -mx-6 px-6 scrollbar-hide">
+              {products.slice(0, enablePagination ? itemsPerPage * totalPages : undefined).map((product) => (
+                <div key={product._id || product.id} className="snap-center shrink-0 w-[85vw] sm:w-[300px]">
+                  <ProductCard
+                    id={product._id || product.id || ""}
+                    name={product.name}
+                    price={product.price}
+                    slug={product.slug}
+                    imageUrl={product.imageUrl || (product.images && product.images[0])}
+                    description={product.description}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
+          ) : (
+            /* Vertical Grid */
+            <div className="grid grid-cols-1 gap-8">
+              {currentProducts.map((product) => (
+                <ProductCard
+                  key={product._id || product.id}
+                  id={product._id || product.id || ""}
+                  name={product.name}
+                  price={product.price}
+                  slug={product.slug}
+                  imageUrl={product.imageUrl || (product.images && product.images[0])}
+                  description={product.description}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Desktop Grid */}

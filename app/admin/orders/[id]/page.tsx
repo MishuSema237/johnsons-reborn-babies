@@ -145,7 +145,49 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         <h2 className="text-lg font-bold mb-4">Payment</h2>
                         <div className="space-y-2 text-sm">
                             <p><span className="text-gray-500">Method:</span> {order.payment.preferredMethod}</p>
-                            <p><span className="text-gray-500">Status:</span> <span className="capitalize">{order.status}</span></p>
+                            <div className="mt-4">
+                                <label className="block text-gray-500 mb-1">Order Status</label>
+                                <select
+                                    value={order.status}
+                                    onChange={async (e) => {
+                                        const newStatus = e.target.value;
+                                        try {
+                                            const res = await fetch(`/api/admin/orders/${order._id}`, {
+                                                method: "PUT",
+                                                headers: { "Content-Type": "application/json" },
+                                                body: JSON.stringify({ status: newStatus }),
+                                            });
+                                            if (res.ok) {
+                                                const updatedOrder = await res.json();
+                                                setOrder(updatedOrder);
+                                                alert("Status updated successfully");
+                                            } else {
+                                                throw new Error("Failed to update status");
+                                            }
+                                        } catch (err) {
+                                            console.error(err);
+                                            alert("Error updating status");
+                                        }
+                                    }}
+                                    className="w-full p-2 border border-gray-300 rounded-md text-sm capitalize"
+                                >
+                                    {[
+                                        "new",
+                                        "pending",
+                                        "confirmed",
+                                        "awaiting_deposit",
+                                        "paid",
+                                        "in_progress",
+                                        "shipped",
+                                        "completed",
+                                        "cancelled"
+                                    ].map((s) => (
+                                        <option key={s} value={s}>
+                                            {s.replace("_", " ")}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

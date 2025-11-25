@@ -181,8 +181,7 @@ export default function OrderPage() {
 
       const result = await response.json();
 
-      // Clear cart and redirect to confirmation
-      clearCart();
+      // Redirect to confirmation
       router.push(`/order/${result.orderReference}`);
     } catch (error) {
       console.error("Order submission error:", error);

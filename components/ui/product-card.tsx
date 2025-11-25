@@ -12,6 +12,8 @@ interface ProductCardProps {
   description?: string;
 }
 
+import { useCart } from "@/lib/context/cart-context";
+
 export function ProductCard({
   id,
   name,
@@ -20,6 +22,22 @@ export function ProductCard({
   slug,
   description,
 }: ProductCardProps) {
+  const { addItem } = useCart();
+
+  const handleAddToCart = (e?: React.MouseEvent) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+    addItem({
+      id,
+      name,
+      price,
+      slug,
+      imageUrl,
+    });
+  };
+
   return (
     <div className="relative group w-full aspect-[3/4] rounded-[32px] p-4 overflow-hidden border-4 border-white shadow-xl transition-all duration-300 hover:-translate-y-2">
       {/* Background Gradient */}
@@ -57,10 +75,10 @@ export function ProductCard({
             ${(price || 0).toFixed(0)}
           </span>
           <Button
-            href={`/product/${slug}`}
-            className="bg-white/90 hover:bg-white text-gray-900 border-none rounded-full px-5 py-2 h-10 font-bold shadow-lg flex items-center gap-2 text-sm backdrop-blur-sm transition-all hover:scale-105"
+            onClick={handleAddToCart}
+            className="bg-pink-600 hover:bg-pink-700 text-white border-none rounded-full px-5 py-2 h-10 font-bold shadow-lg flex items-center gap-2 text-sm backdrop-blur-sm transition-all hover:scale-105"
           >
-            <FaShoppingCart className="text-lg" />
+            <FaShoppingCart className="text-lg " />
             <span className="hidden sm:inline">Add to Cart</span>
           </Button>
         </div>

@@ -39,7 +39,7 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="bg-gray-900 text-gray-300 pt-16 pb-8 mt-24">
+    <footer className="bg-gray-900 text-gray-300 pt-16 pb-8 mt-14">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
         {/* Brand Section */}
         <div className="space-y-4">
@@ -65,7 +65,7 @@ export function SiteFooter() {
 
         {/* Quick Links */}
         <div>
-          <h4 className="text-white font-medium mb-6">Quick Links</h4>
+          <h4 className="text-white font-medium mb-14">Quick Links</h4>
           <ul className="space-y-3 text-sm text-gray-300">
             <li>
               <Link href="/" className="text-gray-300 hover:text-pink-400 transition-colors">
@@ -90,6 +90,11 @@ export function SiteFooter() {
             <li>
               <Link href="/faq" className="text-gray-300 hover:text-pink-400 transition-colors">
                 FAQ
+              </Link>
+            </li>
+            <li>
+              <Link href="/track-order" className="text-gray-300 hover:text-pink-400 transition-colors">
+                Track Order
               </Link>
             </li>
           </ul>
