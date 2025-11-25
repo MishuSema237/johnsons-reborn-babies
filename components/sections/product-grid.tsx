@@ -48,13 +48,13 @@ export function ProductGrid({
   return (
     <section className="mb-12">
       <div className="container mx-auto">
-        <h2 className="text-center mb-12 pt-6 text-4xl font-bold">{title}</h2>
+        <h2 className="text-center mb-12 pt-8 text-4xl font-bold">{title}</h2>
 
         {/* Mobile View */}
         <div className="md:hidden">
           {mobileLayout === "carousel" ? (
             /* Horizontal Scroll (Carousel) */
-            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 scrollbar-hide">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 px-6 scrollbar-hide">
               {products.slice(0, enablePagination ? itemsPerPage * totalPages : undefined).map((product) => (
                 <div key={product._id || product.id} className="snap-center shrink-0 w-[85vw] sm:w-[300px]">
                   <ProductCard
