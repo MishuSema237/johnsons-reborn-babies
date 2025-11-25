@@ -46,7 +46,7 @@ export function ProductGrid({
   };
 
   return (
-    <section className="mb-12 bg-gray-50">
+    <section className="mb-12">
       <div className="container mx-auto">
         <h2 className="text-center mb-12 pt-6 text-4xl font-bold">{title}</h2>
 
