@@ -37,7 +37,8 @@ export default function OrdersPage() {
         <div className="max-w-6xl mx-auto">
             <h1 className="text-3xl font-serif font-bold mb-8">Orders</h1>
 
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left">
                         <thead className="bg-gray-50 border-b border-gray-100">
@@ -90,6 +91,46 @@ export default function OrdersPage() {
                         </tbody>
                     </table>
                 </div>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+                {isLoading ? (
+                    <div className="text-center text-gray-500 py-8">Loading orders...</div>
+                ) : orders.length === 0 ? (
+                    <div className="text-center text-gray-500 py-8">No orders found.</div>
+                ) : (
+                    orders.map((order) => (
+                        <div key={order._id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <div className="font-bold text-lg">#{order.orderReference}</div>
+                                    <div className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</div>
+                                </div>
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize
+                                    ${order.status === 'paid' ? 'bg-green-100 text-green-700' :
+                                        order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
+                                            'bg-yellow-100 text-yellow-700'}`}>
+                                    {order.status.replace('_', ' ')}
+                                </span>
+                            </div>
+
+                            <div className="border-t border-b border-gray-50 py-2 space-y-1">
+                                <div className="text-sm">
+                                    <span className="text-gray-500">Customer:</span> <span className="font-medium">{order.customer.name}</span>
+                                </div>
+                                <div className="text-sm text-gray-500">{order.customer.email}</div>
+                            </div>
+
+                            <div className="flex justify-between items-center pt-1">
+                                <div className="font-bold text-lg">${order.payment.totalAmount.toFixed(2)}</div>
+                                <Link href={`/admin/orders/${order._id}`}>
+                                    <Button size="sm" className="w-full">View Details</Button>
+                                </Link>
+                            </div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     );
