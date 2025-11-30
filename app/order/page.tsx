@@ -46,6 +46,7 @@ export default function OrderPage() {
     country: "",
     paymentMethod: "",
     customPaymentMethod: "",
+    customCountry: "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -92,6 +93,11 @@ export default function OrderPage() {
       }
     }
 
+    // Clear custom country if country changes from OTHER
+    if (name === "country" && value !== "OTHER") {
+      setFormData((prev) => ({ ...prev, customCountry: "" }));
+    }
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -110,6 +116,9 @@ export default function OrderPage() {
     if (!formData.city.trim()) newErrors.city = "City is required";
     if (!formData.zipCode.trim()) newErrors.zipCode = "Zip code is required";
     if (!formData.country) newErrors.country = "Country is required";
+    if (formData.country === "OTHER" && !formData.customCountry.trim())
+      newErrors.customCountry = "Please specify your country";
+
     if (!formData.paymentMethod)
       newErrors.paymentMethod = "Payment method is required";
     if (formData.paymentMethod === "other" && !formData.customPaymentMethod.trim())
@@ -148,7 +157,7 @@ export default function OrderPage() {
           city: formData.city,
           state: formData.state || undefined,
           zipCode: formData.zipCode,
-          country: formData.country,
+          country: formData.country === "OTHER" ? formData.customCountry : formData.country,
         },
         payment: {
           preferredMethod:
@@ -304,6 +313,21 @@ export default function OrderPage() {
                 onChange={handleChange}
                 error={errors.country}
               />
+              {formData.country === "OTHER" && (
+                <div className="mt-4">
+                  <FormInput
+                    id="customCountry"
+                    name="customCountry"
+                    label="Specify Country"
+                    type="text"
+                    placeholder="Enter your country"
+                    required
+                    value={formData.customCountry}
+                    onChange={handleChange}
+                    error={errors.customCountry}
+                  />
+                </div>
+              )}
             </div>
 
             {/* Payment Method */}
