@@ -108,18 +108,18 @@ export function ProductGrid({
               variant="outline"
               onClick={handlePrev}
               disabled={currentPage === 1}
-              className="rounded-full w-12 h-12 p-0 flex items-center justify-center disabled:opacity-30"
+              className="rounded-full w-12 h-12 p-0 flex items-center justify-center disabled:opacity-30 text-gray-900 border-gray-300 hover:bg-gray-100"
             >
               <FaChevronLeft />
             </Button>
-            <span className="font-medium text-gray-600">
+            <span className="font-medium text-gray-900">
               Page {currentPage} of {totalPages}
             </span>
             <Button
               variant="outline"
               onClick={handleNext}
               disabled={currentPage === totalPages}
-              className="rounded-full w-12 h-12 p-0 flex items-center justify-center disabled:opacity-30"
+              className="rounded-full w-12 h-12 p-0 flex items-center justify-center disabled:opacity-30 text-gray-900 border-gray-300 hover:bg-gray-100"
             >
               <FaChevronRight />
             </Button>

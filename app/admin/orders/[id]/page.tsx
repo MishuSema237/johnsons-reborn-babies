@@ -3,6 +3,7 @@
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 interface OrderDetail {
     _id: string;
@@ -22,6 +23,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     const [isLoading, setIsLoading] = useState(true);
     const [replyMessage, setReplyMessage] = useState("");
     const [isSending, setIsSending] = useState(false);
+    const [attachments, setAttachments] = useState<{ filename: string; content: string; encoding: string }[]>([]);
 
     useEffect(() => {
         fetchOrder();
@@ -35,8 +37,37 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             setOrder(data);
         } catch (err) {
             console.error(err);
+            toast.error("Failed to load order");
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            const promises = files.map(file => {
+                return new Promise<{ filename: string; content: string; encoding: string }>((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        const base64 = (reader.result as string).split(',')[1];
+                        resolve({
+                            filename: file.name,
+                            content: base64,
+                            encoding: 'base64'
+                        });
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(promises).then(results => {
+                setAttachments(results);
+            }).catch(err => {
+                console.error("Error reading files:", err);
+                toast.error("Failed to read files");
+            });
         }
     };
 
@@ -50,18 +81,20 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 body: JSON.stringify({
                     subject: `Payment Details for Order ${order?.orderReference}`,
                     message: replyMessage,
+                    attachments: attachments
                 }),
             });
 
             if (res.ok) {
-                alert("Reply sent successfully!");
+                toast.success("Reply sent successfully!");
                 setReplyMessage("");
+                setAttachments([]);
             } else {
-                alert("Failed to send reply.");
+                throw new Error("Failed to send reply");
             }
         } catch (err) {
             console.error(err);
-            alert("Error sending reply.");
+            toast.error("Error sending reply");
         } finally {
             setIsSending(false);
         }
@@ -99,24 +132,44 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         </div>
                     </div>
 
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                        <h2 className="text-xl font-bold mb-4">Reply to Customer</h2>
-                        <div className="space-y-4">
-                            <p className="text-sm text-gray-600">
-                                Send payment details or updates to <strong>{order.customer.email}</strong>.
-                            </p>
-                            <textarea
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all"
-                                rows={6}
-                                placeholder="Enter your message here..."
-                                value={replyMessage}
-                                onChange={(e) => setReplyMessage(e.target.value)}
+                    <h2 className="text-xl font-bold mb-4">Reply to Customer</h2>
+                    <div className="space-y-4">
+                        <p className="text-sm text-gray-600">
+                            Send payment details or updates to <strong>{order.customer.email}</strong>.
+                        </p>
+                        <textarea
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all"
+                            rows={6}
+                            placeholder="Enter your message here..."
+                            value={replyMessage}
+                            onChange={(e) => setReplyMessage(e.target.value)}
+                        />
+
+                        {/* File Upload */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Attachments</label>
+                            <input
+                                type="file"
+                                multiple
+                                onChange={handleFileChange}
+                                className="block w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-pink-50 file:text-pink-700
+                                    hover:file:bg-pink-100"
                             />
-                            <div className="flex justify-end">
-                                <Button onClick={handleReply} disabled={isSending || !replyMessage.trim()}>
-                                    {isSending ? "Sending..." : "Send Reply"}
-                                </Button>
-                            </div>
+                            {attachments.length > 0 && (
+                                <div className="mt-2 text-sm text-gray-500">
+                                    {attachments.length} file(s) selected
+                                </div>
+                            )}
+                        </div>
+
+                        <div className="flex justify-end">
+                            <Button onClick={handleReply} disabled={isSending || !replyMessage.trim()}>
+                                {isSending ? "Sending..." : "Send Reply"}
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -160,13 +213,13 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                                             if (res.ok) {
                                                 const updatedOrder = await res.json();
                                                 setOrder(updatedOrder);
-                                                alert("Status updated successfully");
+                                                toast.success("Status updated successfully");
                                             } else {
                                                 throw new Error("Failed to update status");
                                             }
                                         } catch (err) {
                                             console.error(err);
-                                            alert("Error updating status");
+                                            toast.error("Error updating status");
                                         }
                                     }}
                                     className="w-full p-2 border border-gray-300 rounded-md text-sm capitalize"

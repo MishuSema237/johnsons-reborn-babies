@@ -44,7 +44,16 @@ export async function PUT(
 
         const order = await Order.findByIdAndUpdate(
             id,
-            updateData,
+            {
+                $set: updateData,
+                $push: {
+                    statusHistory: {
+                        status: status || "updated",
+                        timestamp: new Date(),
+                        note: notes || `Status updated to ${status}`,
+                    },
+                },
+            },
             { new: true }
         );
 

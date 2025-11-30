@@ -91,7 +91,15 @@ export default async function OrderConfirmationPage({
           </div>
 
           <div className="border-t border-gray-300 pt-4 mb-6">
-            <div className="flex justify-between font-bold text-xl">
+            <div className="flex justify-between text-gray-600 mb-2">
+              <span>Subtotal</span>
+              <span>${orderItems.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between text-gray-600 mb-2">
+              <span>Shipping</span>
+              <span>${(total - orderItems.reduce((acc: number, item: any) => acc + item.price * item.quantity, 0)).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between font-bold text-xl border-t border-gray-200 pt-2">
               <span>Total</span>
               <span>${total.toFixed(2)}</span>
             </div>

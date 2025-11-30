@@ -16,7 +16,7 @@ export async function POST(
         await connectMongoose();
         const { id } = await params;
         const body = await request.json();
-        const { message, subject } = body;
+        const { message, subject, attachments } = body;
 
         const order = await Order.findById(id);
         if (!order) {
@@ -26,7 +26,7 @@ export async function POST(
             );
         }
 
-        await sendOrderUpdateEmail(order.customer.email, subject, message);
+        await sendOrderUpdateEmail(order.customer.email, subject, message, attachments);
 
         return NextResponse.json({ success: true });
     } catch (error: any) {

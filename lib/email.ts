@@ -16,16 +16,17 @@ interface SendEmailParams {
     to: string;
     subject: string;
     html: string;
+    attachments?: any[];
 }
 
-export async function sendEmail({ to, subject, html }: SendEmailParams) {
+export async function sendEmail({ to, subject, html, attachments }: SendEmailParams) {
     try {
         const info = await transporter.sendMail({
             from: `"${process.env.SMTP_FROM_NAME || 'Joanna\'s Reborns'}" <${process.env.SMTP_USER}>`,
             to,
             subject,
             html,
-            attachments: [
+            attachments: attachments || [
                 {
                     filename: 'logo.jpg',
                     path: process.cwd() + '/public/assets/owners-logo/Joannas Reborns Logo.jpg',
@@ -126,7 +127,7 @@ export async function sendOrderNotificationToAdmin(order: any) {
     });
 }
 
-export async function sendOrderUpdateEmail(to: string, subject: string, message: string) {
+export async function sendOrderUpdateEmail(to: string, subject: string, message: string, attachments?: any[]) {
     const updateContent = `
       <div style="font-family: sans-serif; color: #333;">
         ${message.replace(/\n/g, "<br>")}
@@ -140,5 +141,13 @@ export async function sendOrderUpdateEmail(to: string, subject: string, message:
         to,
         subject,
         html: generateEmailTemplate(updateContent),
+        attachments: [
+            {
+                filename: 'logo.jpg',
+                path: process.cwd() + '/public/assets/owners-logo/Joannas Reborns Logo.jpg',
+                cid: 'logo'
+            },
+            ...(attachments || [])
+        ]
     });
 }
