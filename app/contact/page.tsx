@@ -52,7 +52,7 @@ export default function ContactPage() {
     }
 
     setIsSubmitting(true);
-    setSubmitStatus({ type: null, message: "" });
+
 
     try {
       // Send contact form via EmailJS or API route
