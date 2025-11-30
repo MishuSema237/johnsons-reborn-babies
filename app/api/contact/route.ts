@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { sendContactEmail } from "@/lib/email";
 
 // For now, we'll use EmailJS or just log the contact form
 // You can integrate with EmailJS or send to your email service
@@ -15,20 +16,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // TODO: Send email via EmailJS or your email service
-    // For now, just log it
-    console.log("Contact form submission:", {
+    await sendContactEmail({
       name: body.name,
       email: body.email,
       subject: body.subject,
       message: body.message,
-      timestamp: new Date().toISOString(),
     });
-
-    // In production, you would:
-    // 1. Send email via EmailJS
-    // 2. Or save to database
-    // 3. Or send to your email service
 
     return NextResponse.json(
       { success: true, message: "Message sent successfully" },

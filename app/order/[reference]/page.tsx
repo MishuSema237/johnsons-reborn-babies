@@ -53,8 +53,16 @@ export default async function OrderConfirmationPage({
 
         {/* Print Header */}
         <div className="hidden print:block mb-8 text-center">
+          <div className="flex justify-center mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/owners-logo/Joannas Reborns Logo.jpg"
+              alt="Joanna's Reborns Logo"
+              className="h-24 w-auto object-contain"
+            />
+          </div>
           <h1 className="text-3xl font-bold mb-2">Order Receipt</h1>
-          <p className="text-gray-500">Reborn Babies Studio</p>
+          <p className="text-gray-500">Joanna's Reborns</p>
         </div>
 
         {/* Order Details */}

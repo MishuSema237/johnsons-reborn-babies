@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import connectMongoose from "@/lib/db/mongodb";
 import Order from "@/lib/models/Order";
-import { sendOrderConfirmationEmail } from "@/lib/email/emailjs"; // We might need a generic sendEmail function
+import { sendOrderUpdateEmail } from "@/lib/email";
 
 // Since sendOrderConfirmationEmail is specific, we might need to expose a generic sendEmail or create a new function
 // For now, I'll assume we can use the existing infrastructure or I'll modify emailjs.ts later if needed.
@@ -26,15 +26,7 @@ export async function POST(
             );
         }
 
-        // Here we would call the email service
-        // For now, we'll simulate it or use the existing function if applicable
-        // The existing function `sendOrderConfirmationEmail` is for confirmation.
-        // I should probably export `sendEmail` from `lib/email/emailjs.ts` or create a new function.
-
-        // Let's assume we will update `lib/email/emailjs.ts` to export `sendEmail` or a new `sendReplyEmail`.
-        // For now, I'll return success to unblock the UI work.
-
-        console.log(`Sending email to ${order.customer.email}: ${subject} - ${message}`);
+        await sendOrderUpdateEmail(order.customer.email, subject, message);
 
         return NextResponse.json({ success: true });
     } catch (error: any) {

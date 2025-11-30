@@ -21,9 +21,73 @@ const displayFont = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Joanna's Reborns",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://joannasreborns.com"),
+  title: {
+    default: "Joanna's Reborns | Handcrafted Silicone Reborn Babies",
+    template: "%s | Joanna's Reborns",
+  },
   description:
-    "Handcrafted with love to bring comfort, relief, and healing to hearts grieving the loss of a child or seeking companionship.",
+    "Discover handcrafted silicone reborn babies, designed with passion and precision. Bring comfort, relief, and healing to your home with our lifelike creations.",
+  keywords: [
+    "reborn babies",
+    "silicone babies",
+    "handcrafted dolls",
+    "lifelike dolls",
+    "collectible dolls",
+    "art dolls",
+    "silicone reborns",
+    "custom reborns",
+  ],
+  authors: [{ name: "Joanna's Reborns" }],
+  creator: "Joanna's Reborns",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: "Joanna's Reborns | Handcrafted Silicone Reborn Babies",
+    description:
+      "Handcrafted with love to bring comfort, relief, and healing to hearts grieving the loss of a child or seeking companionship.",
+    siteName: "Joanna's Reborns",
+    images: [
+      {
+        url: "/assets/baby1.png",
+        width: 1200,
+        height: 630,
+        alt: "Joanna's Reborns - Handcrafted Silicone Babies",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Joanna's Reborns | Handcrafted Silicone Reborn Babies",
+    description:
+      "Handcrafted with love to bring comfort, relief, and healing to hearts grieving the loss of a child or seeking companionship.",
+    images: ["/assets/baby1.png"],
+    creator: "@joannasreborns",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "/",
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/assets/baby1.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/assets/baby1.png' },
+    ],
+  },
 };
 
 export default function RootLayout({

@@ -134,7 +134,7 @@ export default function Home() {
           <div className="flex-1 w-full md:max-w-[50%] flex flex-col gap-6">
             <h2 className="text-left text-4xl font-serif">Crafting Dreams, One Baby at a Time</h2>
             <p className="text-lg leading-relaxed text-gray-700">
-              At Reborn Babies, we pour our heart and soul into every silicone
+              At Joanna's Reborns, we pour our heart and soul into every silicone
               reborn baby. Our artists bring these lifelike creations to being
               through meticulous sculpting, detailed hand-painting, and precise
               weighting, ensuring each one is a unique masterpiece.
@@ -165,7 +165,7 @@ export default function Home() {
           <div className="flex-1 w-full md:max-w-[50%] flex flex-col gap-6">
             <h2 className="text-left text-4xl font-serif">Our Story</h2>
             <p className="text-lg leading-relaxed text-gray-700">
-              Reborn Babies was founded on a passion for transforming silicone
+              Joanna's Reborns was founded on a passion for transforming silicone
               into breathing works of art. Our journey began with a single
               artist's dream to create dolls that not only look real but also
               evoke the same warmth and emotion as a real baby.

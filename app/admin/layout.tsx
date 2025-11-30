@@ -84,18 +84,18 @@ export default function AdminLayout({
         <div className="min-h-screen bg-gray-50 flex font-sans">
             {/* Mobile Header */}
             <div className="md:hidden fixed top-0 left-0 right-0 bg-white border-b border-gray-200 p-4 z-20 flex justify-between items-center">
-                <h2 className="text-xl font-serif font-bold text-pink-600">Reborn Admin</h2>
+                <h2 className="text-xl font-serif font-bold text-pink-600">Joanna's Reborns</h2>
                 <Button id="mobile-menu-button" variant="ghost" size="icon" onClick={() => document.getElementById('mobile-sidebar')?.classList.toggle('hidden')}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
                 </Button>
             </div>
 
             {/* Sidebar */}
-            <aside id="mobile-sidebar" className="hidden md:block w-64 bg-white border-r border-gray-200 fixed h-full overflow-y-auto z-10 top-16 md:top-0 transition-transform shadow-lg md:shadow-none">
-                <div className="p-6 border-b border-gray-100 hidden md:block">
-                    <h2 className="text-2xl font-serif font-bold text-pink-600">Reborn Admin</h2>
+            <aside id="mobile-sidebar" className="hidden md:flex flex-col w-64 bg-white border-r border-gray-200 fixed inset-y-0 z-30 pt-16 md:pt-0 transition-transform shadow-lg md:shadow-none">
+                <div className="p-6 border-b border-gray-100 hidden md:block flex-shrink-0">
+                    <h2 className="text-2xl font-serif font-bold text-pink-600">Joanna's Reborns</h2>
                 </div>
-                <nav className="p-4 space-y-2">
+                <nav className="p-4 space-y-2 flex-1 overflow-y-auto">
                     <Link
                         href="/admin/dashboard"
                         className={`block px-4 py-2 rounded-lg transition-colors font-medium ${pathname === "/admin/dashboard"
@@ -172,7 +172,7 @@ export default function AdminLayout({
                         Payment Methods
                     </Link>
                 </nav>
-                <div className="absolute bottom-0 w-full p-4 border-t border-gray-100 bg-white">
+                <div className="p-4 border-t border-gray-100 bg-white flex-shrink-0">
                     <Button
                         variant="outline"
                         className="w-full justify-center text-red-500 hover:text-red-600 hover:bg-red-50 border-red-200"

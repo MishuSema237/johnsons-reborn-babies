@@ -76,6 +76,11 @@ export default function ContactPage() {
         message: "Thank you! Your message has been sent. We'll get back to you soon.",
       });
 
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setSubmitStatus({ type: null, message: "" });
+      }, 5000);
+
       // Reset form
       setFormData({
         name: "",
@@ -112,7 +117,7 @@ export default function ContactPage() {
   }, []);
 
   const iconMap: any = {
-    FaTiktok: <FaInstagram />, // Fallback or map correctly if you import FaTiktok
+    FaTiktok: <FaInstagram />, // Fallback
     FaFacebook: <FaFacebook />,
     FaInstagram: <FaInstagram />,
     FaTwitter: <FaPinterest />, // Fallback
@@ -122,11 +127,18 @@ export default function ContactPage() {
 
   return (
     <div className="w-full max-w-viewport mx-auto">
-      {/* ... (Header and Form code remains same) ... */}
       <div className="text-center mb-16">
+        <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/owners-logo/Joannas Reborns Logo.jpg"
+            alt="Joanna's Reborns"
+            className="w-full h-full object-cover"
+          />
+        </div>
         <h1 className="text-4xl md:text-5xl font-serif mb-4 text-gray-900">Get In Touch</h1>
         <p className="text-gray-500 max-w-2xl mx-auto text-lg">
-          Have a question about our Reborn babies or your order? We'd love to
+          Have a question about Joanna's Reborns or your order? We'd love to
           hear from you.
         </p>
       </div>
@@ -136,7 +148,6 @@ export default function ContactPage() {
         <div className="lg:col-span-7 bg-white p-8 rounded-2xl shadow-sm border border-pink-100">
           <h2 className="text-2xl font-serif mb-6 text-gray-800">Send us a Message</h2>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* ... form fields ... */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormInput
                 id="name"
@@ -213,10 +224,10 @@ export default function ContactPage() {
                 <div>
                   <p className="font-semibold text-gray-900 mb-1">Email Us</p>
                   <a
-                    href="mailto:info@rebornbabies.com"
+                    href="mailto:info@joannasreborns.com"
                     className="text-gray-600 hover:text-pink-600 transition-colors no-underline"
                   >
-                    info@rebornbabies.com
+                    info@joannasreborns.com
                   </a>
                 </div>
               </div>
@@ -266,7 +277,16 @@ export default function ContactPage() {
                   rel="noopener noreferrer"
                   className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center text-gray-600 hover:bg-pink-50 hover:text-pink-600 transition-all hover:-translate-y-1"
                 >
-                  {iconMap[social.icon] || <FaFacebook />}
+                  {social.imageUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={social.imageUrl}
+                      alt={social.platform}
+                      className="w-full h-full object-cover rounded-full"
+                    />
+                  ) : (
+                    iconMap[social.icon] || <FaFacebook />
+                  )}
                 </a>
               ))}
             </div>
@@ -276,5 +296,3 @@ export default function ContactPage() {
     </div>
   );
 }
-
-

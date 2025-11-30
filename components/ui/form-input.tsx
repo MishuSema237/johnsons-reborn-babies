@@ -4,12 +4,14 @@ interface FormInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   required?: boolean;
   error?: string;
+  helpText?: string;
 }
 
 export function FormInput({
   label,
   required,
   error,
+  helpText,
   className = "",
   ...props
 }: FormInputProps) {
@@ -23,6 +25,7 @@ export function FormInput({
         className={`w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-gray-900 text-base focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all ${className}`}
         {...props}
       />
+      {helpText && <p className="text-xs text-gray-500 mt-1">{helpText}</p>}
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>
   );
@@ -33,12 +36,14 @@ interface FormTextareaProps
   label: string;
   required?: boolean;
   error?: string;
+  helpText?: string;
 }
 
 export function FormTextarea({
   label,
   required,
   error,
+  helpText,
   className = "",
   ...props
 }: FormTextareaProps) {
@@ -52,6 +57,7 @@ export function FormTextarea({
         className={`w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 text-base resize-y focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all ${className}`}
         {...props}
       />
+      {helpText && <p className="text-xs text-gray-500 mt-1">{helpText}</p>}
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>
   );

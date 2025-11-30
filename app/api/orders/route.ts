@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db/mongodb";
 import { createOrder } from "@/lib/utils/db-helpers";
-import { sendOrderConfirmationEmail } from "@/lib/email/emailjs";
+import { sendOrderConfirmationEmail, sendOrderNotificationToAdmin } from "@/lib/email";
 import mongoose from "mongoose";
 
 export async function POST(request: NextRequest) {
@@ -66,11 +66,16 @@ export async function POST(request: NextRequest) {
       ],
     });
 
-    // Send confirmation emails (async, don't wait for it)
-    sendOrderConfirmationEmail(order).catch((error) => {
-      console.error("Error sending confirmation email:", error);
-      // Don't fail the order if email fails
-    });
+    // Send emails
+    try {
+      await Promise.all([
+        sendOrderConfirmationEmail(order),
+        sendOrderNotificationToAdmin(order)
+      ]);
+    } catch (emailError) {
+      console.error("Failed to send order emails:", emailError);
+      // Don't fail the request if email fails, but log it
+    }
 
     return NextResponse.json(
       {
@@ -89,4 +94,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

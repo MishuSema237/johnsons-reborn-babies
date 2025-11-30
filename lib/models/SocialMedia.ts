@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
 
+// Force model recompilation to ensure schema changes (like making icon optional) take effect
+if (mongoose.models.SocialMedia) {
+    delete mongoose.models.SocialMedia;
+}
+
 const SocialMediaSchema = new mongoose.Schema(
     {
         platform: {
@@ -17,6 +22,10 @@ const SocialMediaSchema = new mongoose.Schema(
         svgContent: {
             type: String,
             required: false, // Optional if they use icon, but we'll prioritize this in UI
+        },
+        imageUrl: {
+            type: String,
+            required: false,
         },
         active: {
             type: Boolean,

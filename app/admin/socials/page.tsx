@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { FormInput, FormTextarea } from "@/components/ui/form-input";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-import Image from "next/image";
+import { FormInput } from "@/components/ui/form-input";
+import { FaTrash, FaEdit } from "react-icons/fa";
 
 interface SocialMedia {
     _id: string;
@@ -12,6 +11,7 @@ interface SocialMedia {
     url: string;
     icon?: string;
     svgContent?: string;
+    imageUrl?: string;
     active: boolean;
 }
 
@@ -24,9 +24,10 @@ export default function AdminSocialsPage() {
         platform: "",
         url: "",
         icon: "",
-        svgContent: "",
+        imageUrl: "",
     });
     const [error, setError] = useState("");
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         fetchSocials();
@@ -51,6 +52,34 @@ export default function AdminSocialsPage() {
     ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const res = await fetch("/api/upload", {
+                method: "POST",
+                body: formData,
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                setFormData((prev) => ({ ...prev, imageUrl: data.url }));
+            } else {
+                throw new Error("Upload failed");
+            }
+        } catch (err) {
+            console.error("Upload error:", err);
+            setError("Failed to upload image");
+        } finally {
+            setUploading(false);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -90,7 +119,7 @@ export default function AdminSocialsPage() {
             platform: social.platform,
             url: social.url,
             icon: social.icon || "",
-            svgContent: social.svgContent || "",
+            imageUrl: social.imageUrl || "",
         });
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -113,8 +142,11 @@ export default function AdminSocialsPage() {
 
     const resetForm = () => {
         setEditingId(null);
-        setFormData({ platform: "", url: "", icon: "", svgContent: "" });
+        setFormData({ platform: "", url: "", icon: "", imageUrl: "" });
         setError("");
+        // Reset file input if possible, or just let it be
+        const fileInput = document.getElementById("file-upload") as HTMLInputElement;
+        if (fileInput) fileInput.value = "";
     };
 
     return (
@@ -155,30 +187,48 @@ export default function AdminSocialsPage() {
                         />
                     </div>
 
-                    <FormTextarea
-                        id="svgContent"
-                        name="svgContent"
-                        label="SVG Icon Code"
-                        placeholder="<svg ...>...</svg>"
-                        value={formData.svgContent}
-                        onChange={handleChange}
-                        rows={4}
-                        helpText="Paste the raw SVG code here. This will be used as the icon."
-                    />
-
-                    {/* Preview */}
-                    {formData.svgContent && (
-                        <div className="mt-2">
-                            <p className="text-sm font-medium text-gray-700 mb-1">Preview:</p>
-                            <div
-                                className="w-8 h-8 text-gray-600"
-                                dangerouslySetInnerHTML={{ __html: formData.svgContent }}
+                    <div className="mb-4">
+                        <label className="text-sm font-medium text-gray-700 block mb-2">
+                            Logo Image
+                        </label>
+                        <div className="flex items-center gap-4">
+                            <input
+                                id="file-upload"
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                className="block w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2 file:px-4
+                                    file:rounded-full file:border-0
+                                    file:text-sm file:font-semibold
+                                    file:bg-pink-50 file:text-pink-700
+                                    hover:file:bg-pink-100
+                                "
                             />
+                            {uploading && <span className="text-sm text-gray-500">Uploading...</span>}
                         </div>
-                    )}
+                        {formData.imageUrl && (
+                            <div className="mt-2">
+                                <p className="text-xs text-gray-500 mb-1">Current Image URL:</p>
+                                <input
+                                    type="text"
+                                    value={formData.imageUrl}
+                                    readOnly
+                                    className="w-full text-xs p-2 bg-gray-50 border rounded text-gray-500 mb-2"
+                                />
+                                <p className="text-sm font-medium text-gray-700 mb-1">Preview:</p>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={formData.imageUrl}
+                                    alt="Preview"
+                                    className="w-16 h-16 object-contain border border-gray-200 rounded p-1"
+                                />
+                            </div>
+                        )}
+                    </div>
 
                     <div className="flex gap-2 pt-2">
-                        <Button type="submit" disabled={isSubmitting}>
+                        <Button type="submit" disabled={isSubmitting || uploading}>
                             {isSubmitting ? "Saving..." : editingId ? "Update Link" : "Add Link"}
                         </Button>
                         {editingId && (
@@ -219,7 +269,14 @@ export default function AdminSocialsPage() {
                                 socials.map((social) => (
                                     <tr key={social._id} className="hover:bg-gray-50">
                                         <td className="p-4">
-                                            {social.svgContent ? (
+                                            {social.imageUrl ? (
+                                                /* eslint-disable-next-line @next/next/no-img-element */
+                                                <img
+                                                    src={social.imageUrl}
+                                                    alt={social.platform}
+                                                    className="w-8 h-8 object-contain"
+                                                />
+                                            ) : social.svgContent ? (
                                                 <div
                                                     className="w-6 h-6 text-gray-600"
                                                     dangerouslySetInnerHTML={{ __html: social.svgContent }}
