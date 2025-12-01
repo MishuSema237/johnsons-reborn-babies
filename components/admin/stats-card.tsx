@@ -12,8 +12,8 @@ export function StatsCard({ title, value, icon, trend, trendUp }: StatsCardProps
     return (
         <div className="bg-gradient-to-br from-white to-gray-50 p-6 rounded-2xl shadow-sm border border-gray-100 relative overflow-hidden">
             <div className="flex items-center justify-between mb-2">
-                <h3 className="text-gray-500 text-sm font-medium">{title}</h3>
-                <div className="p-2 bg-white/80 backdrop-blur-sm rounded-lg text-pink-600 shadow-sm">
+                <p className="text-gray-500 md:text-lg text-xl font-medium">{title}</p>
+                <div className=" text-pink-600">
                     {icon}
                 </div>
             </div>

@@ -60,7 +60,7 @@ export default function AddBabyPage() {
             <h1 className="text-2xl md:text-3xl font-serif font-bold mb-8 text-gray-900">Add New Baby</h1>
 
             <form onSubmit={handleSubmit} className="space-y-8 bg-white p-8 rounded-2xl shadow-sm">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="block lg:grid lg:grid-cols-2 gap-6">
                     <FormInput
                         id="name"
                         name="name"
@@ -142,7 +142,7 @@ export default function AddBabyPage() {
                         })}
                         rows={3}
                     />
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="block lg:grid lg:grid-cols-2 gap-6">
                         <FormInput
                             id="testimonialAuthor"
                             label="Author Name"

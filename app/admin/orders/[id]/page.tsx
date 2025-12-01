@@ -110,10 +110,10 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 <Button variant="outline" onClick={() => router.back()} className="w-full md:w-auto justify-center">Back to Orders</Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Order Details */}
-                <div className="md:col-span-2 space-y-8">
-                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                <div className="lg:col-span-2 space-y-8">
+                    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
                         <h2 className="text-xl font-bold mb-4">Items</h2>
                         <div className="space-y-4">
                             {order.items.map((item, idx) => (
@@ -167,7 +167,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         </div>
 
                         <div className="flex justify-end">
-                            <Button onClick={handleReply} disabled={isSending || !replyMessage.trim()} className="w-full md:w-auto">
+                            <Button onClick={handleReply} disabled={isSending || !replyMessage.trim()} className="w-full lg:w-auto">
                                 {isSending ? "Sending..." : "Send Reply"}
                             </Button>
                         </div>
@@ -176,7 +176,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
 
                 {/* Sidebar Info */}
                 <div className="space-y-8">
-                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
                         <h2 className="text-lg font-bold mb-4">Customer</h2>
                         <div className="space-y-2 text-sm">
                             <p><span className="text-gray-500">Name:</span> {order.customer.name}</p>
@@ -185,7 +185,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
                         <h2 className="text-lg font-bold mb-4">Shipping</h2>
                         <div className="space-y-2 text-sm">
                             <p>{order.shipping.address}</p>
@@ -194,7 +194,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                         </div>
                     </div>
 
-                    <div className="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100">
+                    <div className="bg-white p-4 lg:p-6 rounded-xl shadow-sm border border-gray-100">
                         <h2 className="text-lg font-bold mb-4">Payment</h2>
                         <div className="space-y-2 text-sm">
                             <p><span className="text-gray-500">Method:</span> {order.payment.preferredMethod}</p>
