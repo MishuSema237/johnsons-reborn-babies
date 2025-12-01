@@ -15,17 +15,25 @@ interface Order {
 
 export default function OrdersPage() {
     const [orders, setOrders] = useState<Order[]>([]);
+    const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [statusFilter, setStatusFilter] = useState("all");
 
     useEffect(() => {
         fetchOrders();
     }, []);
+
+    useEffect(() => {
+        filterOrders();
+    }, [orders, searchQuery, statusFilter]);
 
     const fetchOrders = async () => {
         try {
             const res = await fetch("/api/admin/orders");
             const data = await res.json();
             setOrders(data);
+            setFilteredOrders(data);
         } catch (err) {
             console.error("Failed to fetch orders", err);
         } finally {
@@ -33,9 +41,55 @@ export default function OrdersPage() {
         }
     };
 
+    const filterOrders = () => {
+        let result = [...orders];
+
+        if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            result = result.filter(order =>
+                order.orderReference.toLowerCase().includes(query) ||
+                order.customer.email.toLowerCase().includes(query) ||
+                order.customer.name.toLowerCase().includes(query)
+            );
+        }
+
+        if (statusFilter !== "all") {
+            result = result.filter(order => order.status === statusFilter);
+        }
+
+        setFilteredOrders(result);
+    };
+
+    const formatStatus = (status: string) => {
+        return status.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    };
+
     return (
         <div className="max-w-6xl mx-auto">
-            <h1 className="text-3xl font-serif font-bold mb-8">Orders</h1>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                <h1 className="text-3xl font-serif font-bold">Orders</h1>
+                <div className="flex flex-col sm:flex-row gap-4 w-full md:w-auto">
+                    <input
+                        type="text"
+                        placeholder="Search orders..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
+                    />
+                    <select
+                        value={statusFilter}
+                        onChange={(e) => setStatusFilter(e.target.value)}
+                        className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 bg-white"
+                    >
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="in_progress">In Progress</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+            </div>
 
             {/* Desktop Table View */}
             <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -56,12 +110,12 @@ export default function OrdersPage() {
                                 <tr>
                                     <td colSpan={6} className="p-8 text-center text-gray-500">Loading orders...</td>
                                 </tr>
-                            ) : orders.length === 0 ? (
+                            ) : filteredOrders.length === 0 ? (
                                 <tr>
                                     <td colSpan={6} className="p-8 text-center text-gray-500">No orders found.</td>
                                 </tr>
                             ) : (
-                                orders.map((order) => (
+                                filteredOrders.map((order) => (
                                     <tr key={order._id} className="hover:bg-gray-50 transition-colors">
                                         <td className="p-4 font-medium">{order.orderReference}</td>
                                         <td className="p-4">
@@ -70,11 +124,11 @@ export default function OrdersPage() {
                                         </td>
                                         <td className="p-4">${order.payment.totalAmount.toFixed(2)}</td>
                                         <td className="p-4">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize
+                                            <span className={`px-2 py-1 rounded-full text-xs font-medium
                         ${order.status === 'paid' ? 'bg-green-100 text-green-700' :
                                                     order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
                                                         'bg-yellow-100 text-yellow-700'}`}>
-                                                {order.status.replace('_', ' ')}
+                                                {formatStatus(order.status)}
                                             </span>
                                         </td>
                                         <td className="p-4 text-gray-500 text-sm">
@@ -97,21 +151,21 @@ export default function OrdersPage() {
             <div className="md:hidden space-y-4">
                 {isLoading ? (
                     <div className="text-center text-gray-500 py-8">Loading orders...</div>
-                ) : orders.length === 0 ? (
+                ) : filteredOrders.length === 0 ? (
                     <div className="text-center text-gray-500 py-8">No orders found.</div>
                 ) : (
-                    orders.map((order) => (
+                    filteredOrders.map((order) => (
                         <div key={order._id} className="bg-white p-4 rounded-xl shadow-sm border border-gray-100 space-y-3">
                             <div className="flex justify-between items-start">
                                 <div>
                                     <div className="font-bold text-lg">#{order.orderReference}</div>
                                     <div className="text-sm text-gray-500">{new Date(order.createdAt).toLocaleDateString()}</div>
                                 </div>
-                                <span className={`px-2 py-1 rounded-full text-xs font-medium capitalize
+                                <span className={`px-2 py-1 rounded-full text-xs font-medium
                                     ${order.status === 'paid' ? 'bg-green-100 text-green-700' :
                                         order.status === 'cancelled' ? 'bg-red-100 text-red-700' :
                                             'bg-yellow-100 text-yellow-700'}`}>
-                                    {order.status.replace('_', ' ')}
+                                    {formatStatus(order.status)}
                                 </span>
                             </div>
 

@@ -154,13 +154,6 @@ export async function sendOrderUpdateEmail(to: string, subject: string, message:
         to,
         subject,
         html: generateEmailTemplate(updateContent),
-        attachments: [
-            {
-                filename: 'logo.jpg',
-                path: process.cwd() + '/public/assets/owners-logo/Joannas Reborns Logo.jpg',
-                cid: 'logo'
-            },
-            ...(attachments || [])
-        ]
+        attachments: attachments || []
     });
 }

@@ -13,18 +13,27 @@ export function FormInput({
   error,
   helpText,
   className = "",
+  endIcon,
   ...props
-}: FormInputProps) {
+}: FormInputProps & { endIcon?: React.ReactNode }) {
   return (
     <div className="mb-4">
       <label htmlFor={props.id} className="text-sm font-medium text-gray-700 block mb-2">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
       </label>
-      <input
-        className={`w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-gray-900 text-base focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all ${className}`}
-        {...props}
-      />
+      <div className="relative">
+        <input
+          className={`w-full h-12 px-4 border border-gray-200 rounded-xl bg-white text-gray-900 text-base focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition-all ${endIcon ? "pr-12" : ""
+            } ${className}`}
+          {...props}
+        />
+        {endIcon && (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+            {endIcon}
+          </div>
+        )}
+      </div>
       {helpText && <p className="text-xs text-gray-500 mt-1">{helpText}</p>}
       {error && <p className="text-sm text-red-500 mt-1">{error}</p>}
     </div>
