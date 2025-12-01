@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { FormInput } from "@/components/ui/form-input";
 import { FaSearch, FaBoxOpen, FaShippingFast, FaCheckCircle } from "react-icons/fa";
 import { useSearchParams } from "next/navigation";
 
-export default function TrackOrderPage() {
+function TrackOrderContent() {
     const searchParams = useSearchParams();
     const [orderReference, setOrderReference] = useState(searchParams.get("ref") || "");
     const [email, setEmail] = useState("");
@@ -150,5 +150,17 @@ export default function TrackOrderPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+export default function TrackOrderPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-gray-50">
+                <div className="w-12 h-12 border-4 border-pink-600 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+        }>
+            <TrackOrderContent />
+        </Suspense>
     );
 }
