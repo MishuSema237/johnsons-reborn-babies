@@ -26,6 +26,12 @@ export function PrintButton() {
                     scale: 2,
                     useCORS: true,
                     logging: false,
+                    backgroundColor: '#ffffff', // Force white background
+                    onclone: (clonedDoc) => {
+                        // Remove elements that might cause issues or aren't needed for print
+                        const elementsToRemove = clonedDoc.querySelectorAll('.print\\:hidden');
+                        elementsToRemove.forEach(el => el.remove());
+                    }
                 });
 
                 const imgData = canvas.toDataURL('image/png');
@@ -54,6 +60,8 @@ export function PrintButton() {
                 pdf.save('order-receipt.pdf');
             } catch (error) {
                 console.error('Error generating PDF:', error);
+                // Fallback to regular print if PDF generation fails
+                window.print();
             } finally {
                 setIsGenerating(false);
             }

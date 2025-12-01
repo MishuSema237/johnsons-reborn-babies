@@ -80,7 +80,6 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/favicon.ico' },
       { url: '/assets/baby1.png', type: 'image/png' },
     ],
     apple: [

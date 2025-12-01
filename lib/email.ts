@@ -21,6 +21,19 @@ interface SendEmailParams {
 
 export async function sendEmail({ to, subject, html, attachments }: SendEmailParams) {
     try {
+        // Verify connection configuration
+        await new Promise((resolve, reject) => {
+            transporter.verify(function (error, success) {
+                if (error) {
+                    console.error("SMTP Connection Error:", error);
+                    reject(error);
+                } else {
+                    console.log("SMTP Connection Ready");
+                    resolve(success);
+                }
+            });
+        });
+
         const info = await transporter.sendMail({
             from: `"${process.env.SMTP_FROM_NAME || 'Joanna\'s Reborns'}" <${process.env.SMTP_USER}>`,
             to,
