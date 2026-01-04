@@ -6,7 +6,7 @@ Create a file named `.env.local` in the `webapp` directory with the following co
 
 ```env
 # MongoDB Atlas Connection String
-MONGODB_URI=mongodb+srv://mishusema237_db_user:1mishael@cluster0.ikwyaoe.mongodb.net/reborn_babies?retryWrites=true&w=majority&appName=Cluster0
+
 
 # EmailJS Configuration (for development)
 # Get these from https://www.emailjs.com/
